@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="16"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.timeout.HelloController"
+      style="
+          -fx-background-color: linear-gradient(to bottom, #e8ecf2, #f8f9fc);
+          -fx-font-family: 'Inter', 'Segoe UI', sans-serif;
+      ">
+
+    <padding>
+        <Insets top="24" right="24" bottom="24" left="24"/>
+    </padding>
+
+    <!-- Инструменты времени (первый видимый блок) -->
+    <Label text="⚙️ Инструменты времени"
+           style="
+               -fx-font-size: 18px;
+               -fx-font-weight: 600;
+               -fx-text-fill: #1a1f36;
+               -fx-padding: 0 0 12 0;
+           "/>
+
+    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+
+        <!-- Таймер -->
+        <VBox spacing="10"
+              HBox.hgrow="ALWAYS"
+              style="
+                  -fx-background-color: #ffffff;
+                  -fx-padding: 16;
+                  -fx-background-radius: 12;
+                  -fx-border-color: #e2e8f0;
+                  -fx-border-radius: 12;
+                  -fx-border-width: 1;
+                  -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 4, 0, 0, 1);
+              ">
+            <Label text="⏱️ Таймер"
+                   style="-fx-font-weight: 600; -fx-font-size: 14px; -fx-text-fill: #374151;"/>
+            <Label fx:id="timerDisplay"
+                   text="—"
+                   style="
+                       -fx-font-size: 24px;
+                       -fx-font-weight: 700;
+                       -fx-text-fill: #1e293b;
+                   "/>
+            <HBox spacing="8">
+                <Label text="сек:" style="-fx-text-fill: #6b7280;"/>
+                <TextField fx:id="timerCountdownInput"
+                           prefWidth="65"
+                           style="-fx-pref-height: 36; -fx-font-size: 14px;"/>
+                <Button text="▶️ Старт"
+                        onAction="#onStartTimer"
+                        style="
+                            -fx-background-color: linear-gradient(to right, #3b82f6, #1d4ed8);
+                            -fx-text-fill: white;
+                            -fx-background-radius: 8;
+                            -fx-font-weight: 600;
+                            -fx-pref-height: 36;
+                            -fx-font-size: 13px;
+                        "/>
+            </HBox>
+        </VBox>
+
+        <!-- Будильник -->
+        <VBox spacing="10"
+              HBox.hgrow="ALWAYS"
+              style="
+                  -fx-background-color: #ffffff;
+                  -fx-padding: 16;
+                  -fx-background-radius: 12;
+                  -fx-border-color: #e2e8f0;
+                  -fx-border-radius: 12;
+                  -fx-border-width: 1;
+                  -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 4, 0, 0, 1);
+              ">
+            <Label text="🔔 Будильник"
+                   style="-fx-font-weight: 600; -fx-font-size: 14px; -fx-text-fill: #374151;"/>
+            <HBox spacing="8">
+                <Label text="через:" style="-fx-text-fill: #6b7280;"/>
+                <TextField fx:id="alarmOffsetInput"
+                           prefWidth="65"
+                           style="-fx-pref-height: 36; -fx-font-size: 14px;"/>
+                <Button text="⚡ Установить"
+                        onAction="#onArmAlarm"
+                        style="
+                            -fx-background-color: linear-gradient(to right, #f59e0b, #d97706);
+                            -fx-text-fill: white;
+                            -fx-background-radius: 8;
+                            -fx-font-weight: 600;
+                            -fx-pref-height: 36;
+                            -fx-font-size: 13px;
+                        "/>
+            </HBox>
+            <Label fx:id="passiveAlarmStatus"
+                   text="Ожидание"
+                   style="
+                       -fx-font-size: 22px;
+                       -fx-font-weight: 700;
+                       -fx-text-fill: #059669;
+                   "/>
+        </VBox>
+
+        <!-- Секундомер -->
+        <VBox spacing="10"
+              HBox.hgrow="ALWAYS"
+              style="
+                  -fx-background-color: #ffffff;
+                  -fx-padding: 16;
+                  -fx-background-radius: 12;
+                  -fx-border-color: #e2e8f0;
+                  -fx-border-radius: 12;
+                  -fx-border-width: 1;
+                  -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 4, 0, 0, 1);
+              ">
+            <Label text="⏱️ Секундомер"
+                   style="-fx-font-weight: 600; -fx-font-size: 14px; -fx-text-fill: #374151;"/>
+            <Label fx:id="stopwatchDisplay"
+                   text="00:00"
+                   style="
+                       -fx-font-size: 32px;
+                       -fx-font-weight: 800;
+                       -fx-text-fill: #1e293b;
+                   "/>
+        </VBox>
+
+    </HBox>
+
+    <Separator style="-fx-background-color: #e2e8f0; -fx-pref-height: 1;"/>
+
+    <!-- Основной заголовок -->
+    <Label text="🖥️ Монитор сервера времени"
+           style="
+               -fx-font-size: 22px;
+               -fx-font-weight: 700;
+               -fx-text-fill: #111827;
+           "/>
+
+    <!-- Блок статуса -->
+    <GridPane hgap="16" vgap="10"
+              style="
+                  -fx-background-color: #ffffff;
+                  -fx-padding: 20;
+                  -fx-background-radius: 12;
+                  -fx-border-radius: 12;
+                  -fx-border-color: #e2e8f0;
+                  -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 8, 0, 0, 2);
+              ">
+        <columnConstraints>
+            <ColumnConstraints halignment="RIGHT" minWidth="140"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <Label text="🟢 Состояние сервера:"
+               GridPane.rowIndex="0"
+               style="-fx-font-size: 14px; -fx-text-fill: #6b7280;"/>
+        <Label fx:id="serverStatusLabel"
+               text="Остановлен"
+               GridPane.columnIndex="1"
+               GridPane.rowIndex="0"
+               style="-fx-font-size: 16px; -fx-font-weight: 700; -fx-text-fill: #ef4444;"/>
+
+        <Label text="📊 Счётчик тиков:"
+               GridPane.rowIndex="1"
+               style="-fx-font-size: 14px; -fx-text-fill: #6b7280;"/>
+        <Label fx:id="tickCountLabel"
+               text="0"
+               GridPane.columnIndex="1"
+               GridPane.rowIndex="1"
+               style="-fx-font-size: 16px; -fx-font-weight: 700; -fx-text-fill: #059669;"/>
+
+        <Label text="🌍 UTC время:"
+               GridPane.rowIndex="2"
+               style="-fx-font-size: 14px; -fx-text-fill: #6b7280;"/>
+        <Label fx:id="utcTimeLabel"
+               text="—"
+               GridPane.columnIndex="1"
+               GridPane.rowIndex="2"
+               style="-fx-font-size: 16px; -fx-font-weight: 700; -fx-text-fill: #3b82f6;"/>
+    </GridPane>
+
+    <!-- Кнопки управления -->
+    <HBox spacing="12" style="-fx-padding: 16 0 0 0;">
+        <Button fx:id="startServerButton"
+                text="🚀 Запустить"
+                onAction="#onStartServer"
+                style="
+                    -fx-background-color: linear-gradient(to right, #10b981, #059669);
+                    -fx-text-fill: white;
+                    -fx-background-radius: 10;
+                    -fx-font-weight: 600;
+                    -fx-pref-height: 44;
+                    -fx-font-size: 14px;
+                    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 6, 0, 0, 2);
+                "/>
+
+        <Button fx:id="stopServerButton"
+                text="⏹️ Остановить"
+                onAction="#onStopServer"
+                disable="true"
+                style="
+                    -fx-background-color: linear-gradient(to right, #ef4444, #dc2626);
+                    -fx-text-fill: white;
+                    -fx-background-radius: 10;
+                    -fx-font-weight: 600;
+                    -fx-pref-height: 44;
+                    -fx-font-size: 14px;
+                    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 6, 0, 0, 2);
+                "/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Button text="🔄 Сбросить"
+                onAction="#onResetTicks"
+                style="
+                    -fx-background-color: #f3f4f6;
+                    -fx-text-fill: #6b7280;
+                    -fx-background-radius: 10;
+                    -fx-border-color: #d1d5db;
+                    -fx-border-width: 1;
+                    -fx-border-radius: 10;
+                    -fx-pref-height: 44;
+                    -fx-font-weight: 500;
+                    -fx-font-size: 14px;
+                "/>
+    </HBox>
+
+</VBox>
